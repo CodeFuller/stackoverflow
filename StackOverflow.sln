@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApplication", "dotNet\Mv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiApplication", "dotNet\WebApiApplication\WebApiApplication.csproj", "{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcApplication", "doteNetCore\MvcApplication\MvcApplication.csproj", "{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{896E27A5-94C0-431F-865C-CA4A242158B8} = {F3C9E777-E15C-46D4-A803-B49E13FCF4B7}
 		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
 		{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
+		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C} = {F3C9E777-E15C-46D4-A803-B49E13FCF4B7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {50F95F56-21A2-47E3-AC42-C6CC61946204}
