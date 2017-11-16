@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "dotNe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "doteNetCore\ConsoleApplication\ConsoleApplication.csproj", "{896E27A5-94C0-431F-865C-CA4A242158B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApplication", "dotNet\MvcApplication\MvcApplication.csproj", "{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{896E27A5-94C0-431F-865C-CA4A242158B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{896E27A5-94C0-431F-865C-CA4A242158B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{896E27A5-94C0-431F-865C-CA4A242158B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CF65B875-DE3E-43D9-946E-3C98E14CFB54} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
 		{896E27A5-94C0-431F-865C-CA4A242158B8} = {F3C9E777-E15C-46D4-A803-B49E13FCF4B7}
+		{02FF01A7-C7FA-4F77-815C-DC55C56EDB22} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {50F95F56-21A2-47E3-AC42-C6CC61946204}
