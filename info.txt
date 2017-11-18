@@ -1,0 +1,61 @@
+https://stackoverflow.com/questions/47296817/getting-imetadatadetailsproviders-to-run-more-than-once-in-asp-net-core
+
+	https://weblogs.asp.net/seanmcalinden/asp-net-mvc-2-auto-complete-textbox-custom-view-model-attribute-amp-editortemplate
+
+	http://buildstarted.com/2010/09/14/creating-your-own-modelmetadataprovider-to-handle-custom-attributes/
+
+http://www.michael-whelan.net/using-humanizer-with-asp-dotnet-core/
+
+https://github.com/aspnet/Mvc/issues/6730
+
+
+public class DefaultModelMetadata : ModelMetadata
+
+public DisplayMetadata DisplayMetadata
+{
+	get
+	{
+		if (_details.DisplayMetadata == null)
+		{
+			var context = new DisplayMetadataProviderContext(Identity, _details.ModelAttributes);
+			_detailsProvider.CreateDisplayMetadata(context);
+			_details.DisplayMetadata = context.DisplayMetadata;
+		}
+
+		return _details.DisplayMetadata;
+	}
+}
+
+
+---
+
+Model Metadata is cached due to performance considerations. Class [DefaultModelMetadataProvider][1], which is default implementation of `IModelMetadataProvider` interface, is responsible for this caching. If your application logic requires that metadata is rebuilt on every request, you should substitute this implementation with your own.
+
+You will make your life easier if you inherit your implementation from DefaultModelMetadataProvider and override bare minimum for achieving your goal. Seems like `GetMetadataForType(Type modelType)` should be enough:
+
+    public class CustomModelMetadataProvider : DefaultModelMetadataProvider
+    {
+        public CustomModelMetadataProvider(ICompositeMetadataDetailsProvider detailsProvider)
+            : base(detailsProvider)
+        {
+        }
+    
+        public CustomModelMetadataProvider(ICompositeMetadataDetailsProvider detailsProvider, IOptions<MvcOptions> optionsAccessor)
+            : base(detailsProvider, optionsAccessor)
+        {
+        }
+    
+        public override ModelMetadata GetMetadataForType(Type modelType)
+        {
+            //  Optimization for intensively used System.Object
+            if (modelType == typeof(object))
+            {
+                return base.GetMetadataForType(modelType);
+            }
+    
+            DefaultMetadataDetails details = CreateTypeDetails(ModelMetadataIdentity.ForType(modelType));
+            return CreateModelMetadata(details);
+        }
+    }
+
+  [1]: https://github.com/aspnet/Mvc/blob/dev/src/Microsoft.AspNetCore.Mvc.Core/ModelBinding/Metadata/DefaultModelMetadataProvider.cs
