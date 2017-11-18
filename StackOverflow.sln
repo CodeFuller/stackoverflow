@@ -21,6 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiApplication", "doteNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "dotNet\UnitTests\UnitTests.csproj", "{DFF73258-DCE3-47F8-840B-83E0DCDAE18E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{9D0EBFB3-EB47-4047-A124-031BD11AF43C}"
+	ProjectSection(SolutionItems) = preProject
+		TestMusicLibraryDB.sql = TestMusicLibraryDB.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
