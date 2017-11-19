@@ -1,4 +1,5 @@
 ﻿using System;
+using ConsoleApplication.Dal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,6 +21,8 @@ namespace ConsoleApplication
 			loggerFactory.AddConsole();
 			ILogger logger = loggerFactory.CreateLogger(String.Empty);
 			logger.LogInformation("Hello :)");
+
+			new MusicLibraryRepository().Test();
 		}
 	}
 }
