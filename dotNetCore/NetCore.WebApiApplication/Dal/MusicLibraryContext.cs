@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApiApplication.Models;
+using NetCore.WebApiApplication.Models;
 
-namespace WebApiApplication.Dal
+namespace NetCore.WebApiApplication.Dal
 {
 	public class MusicLibraryContext : DbContext
 	{

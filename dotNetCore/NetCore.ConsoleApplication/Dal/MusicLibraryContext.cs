@@ -1,7 +1,7 @@
-﻿using ConsoleApplication.Objects;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using NetCore.ConsoleApplication.Objects;
 
-namespace ConsoleApplication.Dal
+namespace NetCore.ConsoleApplication.Dal
 {
 	public class MusicLibraryContext : DbContext
 	{

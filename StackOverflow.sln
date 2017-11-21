@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.3
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotNet", "dotNet", "{5BBA48AF-0620-4E80-B347-A365437FD0F1}"
 EndProject
@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotNetCore", "dotNetCore", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "dotNet\ConsoleApplication\ConsoleApplication.csproj", "{CF65B875-DE3E-43D9-946E-3C98E14CFB54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "doteNetCore\ConsoleApplication\ConsoleApplication.csproj", "{896E27A5-94C0-431F-865C-CA4A242158B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.ConsoleApplication", "dotNetCore\NetCore.ConsoleApplication\NetCore.ConsoleApplication.csproj", "{896E27A5-94C0-431F-865C-CA4A242158B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApplication", "dotNet\MvcApplication\MvcApplication.csproj", "{02FF01A7-C7FA-4F77-815C-DC55C56EDB22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiApplication", "dotNet\WebApiApplication\WebApiApplication.csproj", "{1EFD5129-2E0C-4C25-8ED4-3D392EE273D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcApplication", "doteNetCore\MvcApplication\MvcApplication.csproj", "{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.MvcApplication", "dotNetCore\NetCore.MvcApplication\NetCore.MvcApplication.csproj", "{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiApplication", "doteNetCore\WebApiApplication\WebApiApplication.csproj", "{1A2324D3-E3CF-4FE7-B0BA-484E14E20CD7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetCore.WebApiApplication", "dotNetCore\NetCore.WebApiApplication\NetCore.WebApiApplication.csproj", "{1A2324D3-E3CF-4FE7-B0BA-484E14E20CD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "dotNet\UnitTests\UnitTests.csproj", "{DFF73258-DCE3-47F8-840B-83E0DCDAE18E}"
 EndProject

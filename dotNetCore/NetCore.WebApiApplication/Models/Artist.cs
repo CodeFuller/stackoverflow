@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebApiApplication.Models
+namespace NetCore.WebApiApplication.Models
 {
 	public class Artist
 	{

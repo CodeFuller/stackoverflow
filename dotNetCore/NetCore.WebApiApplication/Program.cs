@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace WebApiApplication
+namespace NetCore.WebApiApplication
 {
 	public class Program
 	{

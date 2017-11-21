@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApiApplication.Models
+namespace NetCore.WebApiApplication.Models
 {
 	public class Album
 	{

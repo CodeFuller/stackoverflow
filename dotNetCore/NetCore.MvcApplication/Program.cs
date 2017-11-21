@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace MvcApplication
+namespace NetCore.MvcApplication
 {
 	public class Program
 	{

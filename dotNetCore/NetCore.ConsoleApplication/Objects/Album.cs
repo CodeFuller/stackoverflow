@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ConsoleApplication.Objects
+namespace NetCore.ConsoleApplication.Objects
 {
 	public class Album
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleApplication.Objects
+namespace NetCore.ConsoleApplication.Objects
 {
 	public class Artist
 	{

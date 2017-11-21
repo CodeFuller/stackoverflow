@@ -1,10 +1,10 @@
 ﻿using System;
-using ConsoleApplication.Dal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NetCore.ConsoleApplication.Dal;
 
-namespace ConsoleApplication
+namespace NetCore.ConsoleApplication
 {
 	class Program
 	{

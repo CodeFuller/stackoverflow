@@ -1,4 +1,4 @@
-namespace MvcApplication.Models
+namespace NetCore.MvcApplication.Models
 {
 	public class ErrorViewModel
 	{

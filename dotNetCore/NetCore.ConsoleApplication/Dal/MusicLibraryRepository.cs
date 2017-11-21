@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConsoleApplication.Objects;
+using NetCore.ConsoleApplication.Objects;
 
-namespace ConsoleApplication.Dal
+namespace NetCore.ConsoleApplication.Dal
 {
 	public class MusicLibraryRepository
 	{

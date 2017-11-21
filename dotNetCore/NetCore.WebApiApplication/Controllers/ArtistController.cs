@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApiApplication.Dal;
+using NetCore.WebApiApplication.Dal;
 
-namespace WebApiApplication.Controllers
+namespace NetCore.WebApiApplication.Controllers
 {
 	[Produces("application/json")]
 	[Route("api/Artist")]
