@@ -8,6 +8,7 @@ using System.Web.Http;
 namespace OwinApplication.Controllers
 {
 	[RoutePrefix("api/test")]
+	[Authorize]
 	public class TestController : ApiController
 	{
 		[Route]

@@ -6,8 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ExceptionHandling;
+using System.Web.Http.Routing;
+using System.Web.Routing;
+//using System.Web;
+//using System.Web.Http;
+//using System.Web.Http.ExceptionHandling;
+//using System.Web.Http.Routing;
+//using System.Web.Routing;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.Cookies;
 using Owin;
 
 namespace OwinApplication
@@ -51,6 +58,62 @@ namespace OwinApplication
 			//	AuthenticationType = "ApplicationCookie" + areaName,
 			//	LoginPath = new PathString(loginPath)
 			//});
+
+			ConfigureAuth(app);
+		}
+
+		public static void ConfigureAuth(IAppBuilder app)
+		{
+			//CookieAuthenticationProvider provider = new CookieAuthenticationProvider();
+
+			//var originalHandler = provider.OnApplyRedirect;
+
+			//provider.OnApplyRedirect = context =>
+			//{
+			//	var url = HttpContext.Current.Request.Url.AbsoluteUri;
+
+
+			//	var mvcContext = new HttpContextWrapper(HttpContext.Current);
+			//	var routeData = RouteTable.Routes.GetRouteData(mvcContext);
+
+			//	//Get the current language  
+			//	RouteValueDictionary routeValues = new RouteValueDictionary();
+			//	routeValues.Add("lang", routeData.Values["lang"]);
+
+			//	//Reuse the RetrunUrl
+			//	Uri uri = new Uri(context.RedirectUri);
+			//	string returnUrl = HttpUtility.ParseQueryString(uri.Query)[context.Options.ReturnUrlParameter];
+			//	routeValues.Add(context.Options.ReturnUrlParameter, returnUrl);
+
+			//	//Overwrite the redirection uri
+			//	//context.RedirectUri = url.Action("login", "account", routeValues);
+			//	originalHandler.Invoke(context);
+			//};
+
+
+			app.UseCookieAuthentication(new CookieAuthenticationOptions
+			{
+				AuthenticationType = "ApplicationCookie",
+				LoginPath = new PathString("/auth/login"),
+				Provider = new CookieAuthenticationProvider { OnApplyRedirect = OnApplyRedirect }
+			});
+		}
+
+		public static void OnApplyRedirect(CookieApplyRedirectContext context)
+		{
+			var url = HttpContext.Current.Request.Url.AbsoluteUri;
+
+			string redirectUrl = "/auth/login";
+			if (url.ToLower().Contains("/su/"))
+			{
+				redirectUrl = "/su/auth/login";
+			}
+			else if (url.ToLower().Contains("/app/"))
+			{
+				redirectUrl = "/app/auth/login";
+			}
+
+			context.Response.Redirect(redirectUrl);
 		}
 	}
 }

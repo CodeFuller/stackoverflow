@@ -1,0 +1,3 @@
+https://stackoverflow.com/questions/41598385/area-based-authentication-using-owin
+
+https://stackoverflow.com/questions/21168955/mvc-5-how-to-define-owin-loginpath-with-localized-routes
