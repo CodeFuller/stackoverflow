@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotNet", "dotNet", "{5BBA48AF-0620-4E80-B347-A365437FD0F1}"
 EndProject
@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{9D0EBFB3-EB4
 	ProjectSection(SolutionItems) = preProject
 		TestMusicLibraryDB.sql = TestMusicLibraryDB.sql
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwinApplication", "dotNet\OwinApplication\OwinApplication.csproj", "{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{DFF73258-DCE3-47F8-840B-83E0DCDAE18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF73258-DCE3-47F8-840B-83E0DCDAE18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF73258-DCE3-47F8-840B-83E0DCDAE18E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{3D19E993-0AD9-41D2-B33F-B3E187AC8C2C} = {F3C9E777-E15C-46D4-A803-B49E13FCF4B7}
 		{1A2324D3-E3CF-4FE7-B0BA-484E14E20CD7} = {F3C9E777-E15C-46D4-A803-B49E13FCF4B7}
 		{DFF73258-DCE3-47F8-840B-83E0DCDAE18E} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
+		{9DE4D3E1-6098-4A6C-9C77-EE4D7DCAD8CB} = {5BBA48AF-0620-4E80-B347-A365437FD0F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {50F95F56-21A2-47E3-AC42-C6CC61946204}
