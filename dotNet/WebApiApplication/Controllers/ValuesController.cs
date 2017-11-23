@@ -1,35 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace WebApiApplication.Controllers
 {
+	public class LogEntry
+	{
+		public string firstName { get; set; }
+		public string lastName { get; set; }
+		public string comment { get; set; }
+		public bool modified { get; set; }
+		public DateTime inTime { get; set; }
+		public DateTime outTime { get; set; }
+		public double totalHrs { get; set; }
+		public int logID { get; set; }
+	}
+
 	public class ValuesController : ApiController
 	{
 		// GET api/values
-		public IEnumerable<string> Get()
+		public void Put(int id, LogEntry item)
 		{
-			return new string[] { "value1", "value2" };
-		}
-
-		// GET api/values/5
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
+			if (item != null)
+			{
+				//DO STUFF
+			}
 		}
 	}
 }
