@@ -1,0 +1,22 @@
+It's a funny puzzle.
+
+I've launched your test and the problem reproduces almost for each run. And ACL are often not applied for LEVEL-3 also.
+
+However the problem does not reproduce if tasks run not in parallel.
+Also if directory does not contain those 1000 files, the problem reproduces much less often.
+
+Such behavior is very similar to classic race condition.
+
+I haven't found any explicit information on this topic but it seems like applying ACL on overlapping directory trees is not a thread-safe operation.
+
+To confirm this we need to analyze implementation of SetAccessControl() (or rather underlying Windows API call). But let's try to imagine what it might be.
+
+	1. SetAccessControl() is called for given directory and DirectorySecurity record.
+	2. It creates some internal structure (filesystem object) and fills it with provided data.
+	3. Then it starts enumeration of child objects (directories and files). Such enumeration is partly confirmed by tasks execution time. It's about 500 ms for task3, 1000 ms for task2 and 1500 ms for task1.
+	4. After enumeration is completed, internal directory security record is assigned to directory.
+	5. But in parallel, the same is done for SetAccessControl() called on parent directory. Finally it will overwrite the record created on step 4.
+
+Of course, such flow is just an assumption. We need NTFS or Windows internals experts to confirm this.
+
+But observed behavior almost certainly indicates race condition. Just avoid such parallel applying of ACL on overlapping directory trees and sleep well.
