@@ -51,6 +51,11 @@
   <ItemGroup>
     <Compile Include="Dal\MusicLibraryRepository.cs" />
     <Compile Include="Dal\MusicLibraryContext.cs" />
+    <Compile Include="Migrations\201711251110467_Artist.cs" />
+    <Compile Include="Migrations\201711251110467_Artist.Designer.cs">
+      <DependentUpon>201711251110467_Artist.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Objects\Album.cs" />
     <Compile Include="Objects\Artist.cs" />
     <Compile Include="Program.cs" />
@@ -59,6 +64,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711251110467_Artist.resx">
+      <DependentUpon>201711251110467_Artist.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
