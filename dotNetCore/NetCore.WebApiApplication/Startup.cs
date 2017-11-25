@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCore.WebApiApplication.Controllers;
 
 namespace NetCore.WebApiApplication
 {
@@ -18,6 +20,9 @@ namespace NetCore.WebApiApplication
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
+
+			services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddTransient<ISomeDependency, SomeDependency>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
