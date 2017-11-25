@@ -17,7 +17,19 @@ namespace ConsoleApplication.Dal
 
 		public void Test()
 		{
-			var result = new MusicLibraryRepository().GetArtistAlbums(new Guid("47720456-A386-42F2-BF78-4466BD293AD0"));
+			using (var ctx = new MusicLibraryContext())
+			{
+				ctx.Database.Log = Console.Write;
+
+				var artist = new Artist
+				{
+					Id = Guid.NewGuid(),
+					Name = $"Created on {DateTime.Now}",
+				};
+
+				ctx.Artists.Add(artist);
+				ctx.SaveChanges();
+			}
 		}
 	}
 }

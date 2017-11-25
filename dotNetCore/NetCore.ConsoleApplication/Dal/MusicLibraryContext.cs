@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetCore.ConsoleApplication.Objects;
 
 namespace NetCore.ConsoleApplication.Dal
@@ -12,6 +13,11 @@ namespace NetCore.ConsoleApplication.Dal
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(@"Server=.;Database=TestMusicLibraryDB;Trusted_Connection=True;");
+
+			var loggerFactory = new LoggerFactory();
+			loggerFactory.AddDebug();
+			optionsBuilder.UseLoggerFactory(loggerFactory);
+			optionsBuilder.EnableSensitiveDataLogging();
 		}
 	}
 }
