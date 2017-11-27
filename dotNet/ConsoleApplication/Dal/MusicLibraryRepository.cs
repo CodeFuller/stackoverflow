@@ -17,18 +17,12 @@ namespace ConsoleApplication.Dal
 
 		public void Test()
 		{
-			using (var ctx = new MusicLibraryContext())
+			using (var ctx = new CapabilitiesContext())
 			{
-				ctx.Database.Log = Console.Write;
-
-				var artist = new Artist
-				{
-					Id = Guid.NewGuid(),
-					Name = $"Created on {DateTime.Now}",
-				};
-
-				ctx.Artists.Add(artist);
-				ctx.SaveChanges();
+				var list = new List<string> {"JAVA"};
+				//var result = ctx.Resources.Select(x => x.ResourceCapability.Where(y => list.Contains(y.Capability.Description))).ToList();
+				//var result = ctx.Resources.Where(x => ResourceCapability.Where(y => list.Contains(y.Capability.Description))).ToList();
+				var result = ctx.ResourceCapabilities.Where(x => list.Contains(x.Capability.Description)).Select(x => x.Resource).Distinct().ToList();
 			}
 		}
 	}

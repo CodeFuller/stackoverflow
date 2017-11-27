@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dal\CapabilitiesContext.cs" />
     <Compile Include="Dal\MusicLibraryRepository.cs" />
     <Compile Include="Dal\MusicLibraryContext.cs" />
     <Compile Include="Objects\Album.cs" />
