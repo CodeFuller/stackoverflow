@@ -8,12 +8,17 @@ using Serilog.Events;
 
 namespace NetCore.ConsoleApplication
 {
-public class SubLoggerConfiguration
-{
-	public LogEventLevel Level { get; set; }
+	public class SubLoggerConfiguration
+	{
+		public LogEventLevel Level { get; set; }
 
-	public string PathFormat { get; set; }
-}
+		private string pathFormat;
+		public string PathFormat
+		{
+			get => pathFormat;
+			set => pathFormat = value.Replace("%APPLICATION_NAME%", Environment.GetEnvironmentVariable("APPLICATION_NAME"));
+		}
+	}
 
 	class Program
 	{
@@ -32,7 +37,7 @@ public class SubLoggerConfiguration
 			IConfiguration configuration = configurationBuilder.Build();
 			SubLoggerConfiguration subLoggerConfiguration = new SubLoggerConfiguration();
 			configuration.GetSection("Serilog:SubLogger").Bind(subLoggerConfiguration);
-			
+
 			//var log = new LoggerConfiguration()
 			//	.ReadFrom.Configuration(configuration)
 			//	.CreateLogger();
