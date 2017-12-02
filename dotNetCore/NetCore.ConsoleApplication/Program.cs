@@ -29,6 +29,24 @@ namespace NetCore.ConsoleApplication
 
 	class Program
 	{
+		public static Serilog.ILogger BuildLogger(IConfiguration config, SerilogSubLoggerConfigurations slcs)
+		{
+			var lc = new LoggerConfiguration();
+			lc.ReadFrom.Configuration(config);
+
+			foreach (var cfg in slcs.SubLoggers)
+			{
+				lc.WriteTo.Logger(logger => logger.Filter
+					.ByIncludingOnly(lvl => lvl.Level == cfg.Level).WriteTo
+					.RollingFile(cfg.PathFormat));
+			}
+
+			//	Apply any additional changes to lc configuration here
+
+			//	Finally build a logger
+			return lc.CreateLogger();
+		}
+
 		static void Main(string[] args)
 		{
 			IServiceCollection services = new ServiceCollection();
@@ -38,6 +56,11 @@ namespace NetCore.ConsoleApplication
 			configurationBuilder.AddJsonFile("AppSettings.json");
 			IConfiguration configuration = configurationBuilder.Build();
 			SerilogSubLoggerConfigurations subLoggerConfigurations = configuration.GetSection("Serilog").Get<SerilogSubLoggerConfigurations>();
+
+			var logger = BuildLogger(configuration, subLoggerConfigurations);
+			logger.Information("Test info message");
+			logger.Warning("Test warning message");
+			logger.Fatal("Test fatal message");
 		}
 	}
 }
