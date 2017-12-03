@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NetCore.WebApiApplication.Controllers
@@ -8,9 +9,14 @@ namespace NetCore.WebApiApplication.Controllers
 	{
 		// GET api/values
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public IActionResult Get()
 		{
-			return new string[] { "value1", "value2" };
+			var stuff = new Collection<string>();
+			for (int i = 0; i < 100000; i++)
+			{
+				stuff.Add($"hello{i}");
+			}
+			return Ok(stuff);
 		}
 
 		// GET api/values/5
