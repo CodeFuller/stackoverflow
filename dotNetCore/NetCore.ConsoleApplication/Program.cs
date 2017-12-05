@@ -6,6 +6,11 @@ using NetCore.ConsoleApplication.Dal;
 
 namespace NetCore.ConsoleApplication
 {
+	public class SomeSettings
+	{
+		public string SomeValue { get; set; }
+	}
+
 	class Program
 	{
 		static void Main(string[] args)
@@ -21,6 +26,8 @@ namespace NetCore.ConsoleApplication
 			loggerFactory.AddConsole();
 			ILogger logger = loggerFactory.CreateLogger(String.Empty);
 			logger.LogInformation("Hello :)");
+
+			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
 
 			new MusicLibraryRepository().Test();
 		}
