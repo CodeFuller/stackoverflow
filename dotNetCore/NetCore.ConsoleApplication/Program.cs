@@ -1,35 +1,53 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
+using Serilog;
+using Serilog.Core;
+using Serilog.Sinks.MSSqlServer;
 
 namespace NetCore.ConsoleApplication
 {
-	public class SomeSettings
+	public class MsSqlServerSinkConfiguration
 	{
-		public string SomeValue { get; set; }
+		public string ConnectionString { get; set; }
+
+		public string TableName { get; set; }
+
+		public bool AutoCreateSqlTable { get; set; }
+
+		public ICollection<StandardColumn> ExcludedColumns { get; set; }
+
+		public ColumnOptions ColumnOptions
+		{
+			get
+			{
+				ColumnOptions columnOptions = new ColumnOptions();
+				foreach (var excludedColumn in ExcludedColumns)
+				{
+					columnOptions.Store.Remove(excludedColumn);
+				}
+
+				return columnOptions;
+			}
+		}
 	}
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			var configBuilder = new ConfigurationBuilder();
+			configBuilder.AddJsonFile("AppSettings.json");
+			var configuration = configBuilder.Build();
+			var sinkConfig = new MsSqlServerSinkConfiguration();
+			configuration.Bind("SqlServerSink", sinkConfig);
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
+			Logger log = new LoggerConfiguration()
+				//	.WriteTo.MSSqlServer(@"Server=.;Database=LoggingDB;Trusted_Connection=True;", tableName, columnOptions: columnOptions, autoCreateSqlTable: true)
+				.WriteTo.MSSqlServer(sinkConfig.ConnectionString, sinkConfig.TableName, columnOptions: sinkConfig.ColumnOptions, autoCreateSqlTable: sinkConfig.AutoCreateSqlTable)
+				.CreateLogger();
 
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
-
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			log.Information("Hello!");
+			log.Dispose();
 		}
 	}
 }
