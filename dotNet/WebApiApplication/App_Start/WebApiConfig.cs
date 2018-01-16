@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
+using WebApiApplication.Controllers;
 
 namespace WebApiApplication
 {
@@ -16,6 +18,15 @@ namespace WebApiApplication
 				routeTemplate: "api/{controller}/{id}",
 				defaults: new { id = RouteParameter.Optional }
 			);
+			config.ParameterBindingRules.Insert(0, paramDesc =>
+			{
+				if (typeof(AuthenticatedRequest).IsAssignableFrom(paramDesc.ParameterType))
+				{
+					return new AuthRequestBinding(paramDesc);
+				}
+
+				return null;
+			});
 		}
 	}
 }
