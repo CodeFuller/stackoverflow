@@ -1,29 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 
 namespace MongoDbClient
 {
-	public class TestDocument : Document
+	public class DummyClass
 	{
-		public int NumericData { get; set; }
+		public string Name { get; set; }
 
-		public string StringData { get; set; }
+		public string Type { get; set; }
+
+		public string Date { get; set; }
+
+		public int Age { get; set; }
+
+		public int Value { get; set; }
 	}
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			var document = new TestDocument
-			{
-				Id = 123,
-				NumericData = 456,
-				StringData = "Initial data",
-			};
-
 			var mongoClient = new MongoClient(new MongoClientSettings
 			{
 				Server = new MongoServerAddress("localhost", 27017),
@@ -36,22 +37,107 @@ namespace MongoDbClient
 				}
 			});
 
-			var repository = new Repository<TestDocument>(mongoClient, "TestDB", "TestDocuments");
+			var database = mongoClient.GetDatabase("TestDB");
+			var collection = database.GetCollection<DummyClass>("Test48359797");
 
-			repository.AddDocument(document);
+			//collection.InsertOne(new DummyClass
+			//{
+			//	Name = "test1",
+			//	Type = "typeX",
+			//	Date = "10-10-10",
+			//	Age = 10,
+			//	Value = 20,
+			//});
 
-			document.StringData = "Second data";
-			repository.UpdateDocument(document);
+			//collection.InsertOne(new DummyClass
+			//{
+			//	Name = "test1",
+			//	Type = "typeX",
+			//	Date = "10-10-10",
+			//	Age = 1000,
+			//	Value = 2000,
+			//});
 
-			document.StringData = "Third data";
-			repository.UpsertDocument(document);
+			//collection.InsertOne(new DummyClass
+			//{
+			//	Name = "test2",
+			//	Type = "typeX",
+			//	Date = "10-10-10",
+			//	Age = 20,
+			//	Value = 30,
+			//});
 
-			var documents = repository.GetDocuments().ToList();
+			//collection.InsertOne(new DummyClass
+			//{
+			//	Name = "test3",
+			//	Type = "typeX",
+			//	Date = "10-10-10",
+			//	Age = 30,
+			//	Value = 40,
+			//});
 
-			repository.DeleteDocument(document.Id);
+			var date = "10-10-10";
+			var type = "typeX";
+			var indexNames = new List<string> { "test1", "test2" };
 
-			document.StringData = "Fourth data";
-			repository.UpsertDocument(document);
+			var filter = new BsonDocument
+			{
+				{"Date", date},
+				{"Type", type}
+			};
+
+			// Create the filter
+			filter.Add("Name", new BsonDocument
+			{
+				{"$in", new BsonArray(indexNames)}
+			});
+
+			// Create the group, this does not work.
+			var groupBad = new BsonDocument
+			{
+				{"_id",
+					new BsonDocument {
+						{"Name", "$Name"},
+						{"Result", new BsonDocument("$push", new BsonArray()) }
+					}
+				}
+			};
+
+			var group = new BsonDocument
+			{
+				{
+					"_id", new BsonDocument {
+						{"Name", "$Name"},
+					}
+				},
+				{
+					"Result", new BsonDocument("$push", new BsonDocument
+						{
+							{ "Name", "$Name" },
+							{ "Type", "$Type" },
+							{ "Date", "$Date" },
+							{ "Age", "$Age" },
+							{ "Value", "$Value" },
+						}
+					)
+				}
+			};
+			
+			// Query the group with the filter
+			//var resultslambda = collection.Aggregate().Match(filter).Group(group).ToList();
+			var resultslambda2 = collection.Aggregate().Match(filter).Group(
+				x => x.Name,
+				g => new {
+					Result = g.Select(x => new
+					{
+						x.Name,
+						x.Type,
+						x.Date,
+						x.Age,
+						x.Value
+					})
+				}
+			).ToList();
 		}
 	}
 }
