@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 
@@ -13,17 +18,66 @@ namespace MongoDbClient
 		public string StringData { get; set; }
 	}
 
+	public class FixingReferralsSerializer : EnumerableSerializerBase<List<ObjectId?>>
+	{
+		public override List<ObjectId?> Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+		{
+			if (context.Reader.CurrentBsonType == BsonType.String)
+			{
+				context.Reader.ReadString();
+				return null;
+			}
+
+			return base.Deserialize(context, args);
+		}
+
+		protected override void AddItem(object accumulator, object item)
+		{
+			((List<ObjectId?>)accumulator).Add((ObjectId?)item);
+		}
+
+		protected override object CreateAccumulator()
+		{
+			return new List<ObjectId?>();
+		}
+
+		protected override IEnumerable EnumerateItemsInSerializationOrder(List<ObjectId?> value)
+		{
+			return value;
+		}
+
+		protected override List<ObjectId?> FinalizeResult(object accumulator)
+		{
+			return (List<ObjectId?>)accumulator;
+		}
+	}
+
+	public class FixingReferralsArraySerializer : ArraySerializer<ObjectId?>
+	{
+		public override ObjectId?[] Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
+		{
+			if (context.Reader.CurrentBsonType == BsonType.String)
+			{
+				context.Reader.ReadString();
+				return null;
+			}
+
+			return base.Deserialize(context, args);
+		}
+	}
+
+	[BsonIgnoreExtraElements]
+	public class User : Document
+	{
+		[BsonDefaultValue(null)]
+		[BsonSerializer(typeof(FixingReferralsSerializer))]
+		public List<ObjectId?> referrals { get; set; }
+	}
+
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			var document = new TestDocument
-			{
-				Id = 123,
-				NumericData = 456,
-				StringData = "Initial data",
-			};
-
 			var mongoClient = new MongoClient(new MongoClientSettings
 			{
 				Server = new MongoServerAddress("localhost", 27017),
@@ -36,22 +90,10 @@ namespace MongoDbClient
 				}
 			});
 
-			var repository = new Repository<TestDocument>(mongoClient, "TestDB", "TestDocuments");
+			var database = mongoClient.GetDatabase("TestDB");
+			var collection = database.GetCollection<User>("TestUsers");
 
-			repository.AddDocument(document);
-
-			document.StringData = "Second data";
-			repository.UpdateDocument(document);
-
-			document.StringData = "Third data";
-			repository.UpsertDocument(document);
-
-			var documents = repository.GetDocuments().ToList();
-
-			repository.DeleteDocument(document.Id);
-
-			document.StringData = "Fourth data";
-			repository.UpsertDocument(document);
+			var data = collection.AsQueryable<User>().ToList();
 		}
 	}
 }
