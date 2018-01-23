@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 
 namespace WebApiApplication
 {
@@ -16,6 +17,16 @@ namespace WebApiApplication
 				routeTemplate: "api/{controller}/{id}",
 				defaults: new { id = RouteParameter.Optional }
 			);
+
+config.ParameterBindingRules.Insert(0, paramDesc =>
+{
+	if (paramDesc.GetCustomAttributes<FromUriOrBodyAttribute>().Any())
+	{
+		return new UriOrBodyParameterBinding(paramDesc);
+	}
+
+	return null;
+});
 		}
 	}
 }
