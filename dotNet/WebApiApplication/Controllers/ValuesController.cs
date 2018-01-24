@@ -1,35 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace WebApiApplication.Controllers
 {
 	public class ValuesController : ApiController
 	{
-		// GET api/values
-		public IEnumerable<string> Get()
-		{
-			return new string[] { "value1", "value2" };
-		}
-
-		// GET api/values/5
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
+[HttpPost]
+[Route("BridgeSP/{SPId}")]
+public HttpResponseMessage Post(long SPId)
+{
+	//	...
+			try
+			{
+				return Request.CreateResponse(HttpStatusCode.OK, "SP Bridged Successful ");
+			}
+			catch (Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message.ToString());
+			}
 		}
 	}
 }
