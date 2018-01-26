@@ -1,41 +1,28 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
 namespace NetCore.WebApiApplication.Controllers
 {
 	[Route("api/[controller]")]
 	public class ValuesController : Controller
 	{
+		[NonAction]
+		public override void OnActionExecuting(ActionExecutingContext context)
+		{
+			var responseHeaders = (FrameResponseHeaders)HttpContext.Response.Headers;
+			responseHeaders.MakeCaseInsensitive();
+		}
+
 		// GET api/values
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public string Get()
 		{
-			return new string[] { "value1", "value2" };
-		}
+			var responseHeaders = (FrameResponseHeaders)HttpContext.Response.Headers;
+			responseHeaders.AddCaseInsensitiveHeader("Set-Cookie", "Cookies1");
+			responseHeaders.AddCaseInsensitiveHeader("SET-COOKIE", "Cookies2");
 
-		// GET api/values/5
-		[HttpGet("{id}")]
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// POST api/values
-		[HttpPost]
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/values/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/values/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
+			return "Hello";
 		}
 	}
 }
