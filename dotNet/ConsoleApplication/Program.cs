@@ -30,15 +30,15 @@ namespace ConsoleApplication
 	{
 	}
 
-public class Installer<TDataRepository> : IWindsorInstaller where TDataRepository : IRepository
-{
-	public void Install(IWindsorContainer container, IConfigurationStore store)
+	public class Installer<TDataRepository> : IWindsorInstaller where TDataRepository : IRepository
 	{
-		container.Register(Component.For<IRepository, ICacheService<int, List<MyData>>>().ImplementedBy<MyDataCache>());
-		container.Register(Component.For<IRepository>().ImplementedBy<ComputedColumns>());
-		container.Register(Component.For<IRepository>().ImplementedBy<TDataRepository>());
+		public void Install(IWindsorContainer container, IConfigurationStore store)
+		{
+			container.Register(Component.For<IRepository, ICacheService<int, List<MyData>>>().ImplementedBy<MyDataCache>());
+			container.Register(Component.For<IRepository>().ImplementedBy<ComputedColumns>());
+			container.Register(Component.For<IRepository>().ImplementedBy<TDataRepository>());
+		}
 	}
-}
 
 	public class MockedRepository : IRepository
 	{
