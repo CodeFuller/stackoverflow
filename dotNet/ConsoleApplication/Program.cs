@@ -1,4 +1,4 @@
-﻿using ConsoleApplication.Dal;
+﻿using Microsoft.Office.Interop.Word;
 
 namespace ConsoleApplication
 {
@@ -6,7 +6,13 @@ namespace ConsoleApplication
 	{
 		static void Main(string[] args)
 		{
-			new MusicLibraryRepository().Test();
+			Application application = new Application();
+			Document document = application.Documents.Open(@"d:\temp\test.docx");
+
+			Range range = document.Range();
+
+			document.Close();
+			application.Quit();
 		}
 	}
 }
