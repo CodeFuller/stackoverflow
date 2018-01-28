@@ -1,14 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using System.Web.Http;
+using System.Web.Http.Results;
 
 namespace WebApiApplication.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : ApiController
 	{
-		public ActionResult Index()
+		[HttpPost]
+		public IHttpActionResult ProcessFields([FromUri] string field1, [FromUri] string field2, [FromBody] string field3, [FromUri] string field4)
 		{
-			ViewBag.Title = "Home Page";
-
-			return View();
+			return new OkResult(Request);
 		}
 	}
 }
