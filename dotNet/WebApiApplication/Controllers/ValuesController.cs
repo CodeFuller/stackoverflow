@@ -1,35 +1,35 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace WebApiApplication.Controllers
 {
+	public class BlogPostDataModel
+	{
+	}
+
+	public interface IDataRepository
+	{
+		Task<IList<T>> GetAllAsync<T>() where T : class;
+	}
+
 	public class ValuesController : ApiController
 	{
+		private readonly IApplicationCacheService cachingService;
+		private readonly IDataRepository repository;
+
+		public ValuesController(IApplicationCacheService cachingService)
+		{
+			this.cachingService = cachingService;
+		}
+
 		// GET api/values
-		public IEnumerable<string> Get()
+		public async Task  Get()
 		{
-			return new string[] { "value1", "value2" };
-		}
-
-		// GET api/values/5
-		public string Get(int id)
-		{
-			return "value";
-		}
-
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
-
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
-
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
+			var items = await cachingService.GetOrSetAsync<IList<BlogPostDataModel>>(
+				"BlogPostsIndex",
+				() => repository.GetAllAsync<BlogPostDataModel>()
+			);
 		}
 	}
 }
