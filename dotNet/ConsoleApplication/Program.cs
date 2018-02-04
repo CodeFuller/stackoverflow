@@ -1,4 +1,4 @@
-﻿using ConsoleApplication.Dal;
+﻿using System.Net;
 
 namespace ConsoleApplication
 {
@@ -6,7 +6,13 @@ namespace ConsoleApplication
 	{
 		static void Main(string[] args)
 		{
-			new MusicLibraryRepository().Test();
+			var content = "Some content";
+			var url = "http://localhost:18606/";
+
+			using (WebClient client = new WebClient())
+			{
+				string result = client.UploadString(url, content);
+			}
 		}
 	}
 }
