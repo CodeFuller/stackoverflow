@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace WebApiApplication
 {
@@ -16,6 +17,9 @@ namespace WebApiApplication
 				routeTemplate: "api/{controller}/{id}",
 				defaults: new { id = RouteParameter.Optional }
 			);
+
+			var binderProvider = new CustomModelBinderProvider<string>(new EmptyStringToNullModelBinder());
+			config.Services.Insert(typeof(ModelBinderProvider), 0, binderProvider);
 		}
 	}
 }
