@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,15 @@ namespace NetCore.WebApiApplication
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			var rewrite = new RewriteOptions()
+					.AddRedirect("Page1From", "Page1To")        // Redirect
+					.AddRewrite("Page2From", "Page2To", true)  // Rewrite
+				.Add(new MoviesRedirectRule(                // Custom Rule
+				matchPaths: new[] { "/Page3From1", "/Page3From2", "/Page3From3" },
+				newPath: "/api/values"));
+
+			app.UseRewriter(rewrite);
 
 			app.UseMvc();
 		}
