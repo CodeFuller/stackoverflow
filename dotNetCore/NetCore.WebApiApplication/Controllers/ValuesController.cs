@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NetCore.WebApiApplication.Controllers
@@ -10,6 +11,7 @@ namespace NetCore.WebApiApplication.Controllers
 		[HttpGet]
 		public IEnumerable<string> Get()
 		{
+			BackgroundJob.Enqueue(() => TestJob.Execute(null));
 			return new string[] { "value1", "value2" };
 		}
 

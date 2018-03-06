@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hangfire;
+using Hangfire.Console;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace NetCore.WebApiApplication
 {
@@ -18,6 +21,16 @@ namespace NetCore.WebApiApplication
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
+			services.AddHangfire(config =>
+				config
+					.UseSqlServerStorage("Server=localhost;Database=HangfireDB2;Integrated Security=true;")
+					.UseConsole());
+
+			Log.Logger = new LoggerConfiguration()
+				.Enrich.FromLogContext()
+				.MinimumLevel.Debug()
+				.WriteTo.HangfireContextSink()
+				.CreateLogger();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -29,6 +42,9 @@ namespace NetCore.WebApiApplication
 			}
 
 			app.UseMvc();
+
+			app.UseHangfireDashboard();
+			app.UseHangfireServer();
 		}
 	}
 }
