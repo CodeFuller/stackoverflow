@@ -1,14 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Core.Events;
+using WebApiApplication.Models;
 
 namespace WebApiApplication.Controllers
 {
 	public class ValuesController : ApiController
 	{
 		// GET api/values
-		public IEnumerable<string> Get()
+		public List<ReportingSetDefinition> Get()
 		{
-			return new string[] { "value1", "value2" };
+			var mongoClient = new MongoClient(new MongoClientSettings
+			{
+				Server = new MongoServerAddress("localhost", 27017),
+				ClusterConfigurator = cb =>
+				{
+					cb.Subscribe<CommandStartedEvent>(e =>
+					{
+						Console.WriteLine($"{e.CommandName} - {e.Command.ToJson()}");
+					});
+				}
+			});
+
+			var database = mongoClient.GetDatabase("testDB");
+			var data = database.GetCollection<ReportingSetDefinition>("reportingSet").AsQueryable().ToList();
+			return data;
 		}
 
 		// GET api/values/5
