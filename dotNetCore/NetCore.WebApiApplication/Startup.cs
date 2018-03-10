@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Formatting.Json;
 
 namespace NetCore.WebApiApplication
 {
@@ -29,6 +30,7 @@ namespace NetCore.WebApiApplication
 			Log.Logger = new LoggerConfiguration()
 				.Enrich.FromLogContext()
 				.MinimumLevel.Debug()
+				.WriteTo.File(new JsonFormatter(), @"d:\CodeFuller\temp\log.log")
 				.WriteTo.HangfireContextSink()
 				.CreateLogger();
 		}

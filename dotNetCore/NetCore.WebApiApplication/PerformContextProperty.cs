@@ -16,7 +16,6 @@ namespace NetCore.WebApiApplication
 
 		public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
 		{
-			throw new NotImplementedException();
 		}
 	}
 }
