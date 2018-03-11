@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using System.IO;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
+using Microsoft.Extensions.Options;
 
 namespace NetCore.ConsoleApplication
 {
@@ -15,21 +15,23 @@ namespace NetCore.ConsoleApplication
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			var services = new ServiceCollection();
+			services.AddDataProtection()
+				.PersistKeysToFileSystem(new DirectoryInfo(@"c:\temp\"))
+				// or .PersistKeysToRegistry(Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Sample\keys"))
+				.ProtectKeysWithDpapi();
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
+			var serviceProvider = services.BuildServiceProvider();
+			var options = serviceProvider.GetService<IOptions<KeyManagementOptions>>();
+			var keyManagementOptions = options.Value;
 
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
+			var xmlRepository = keyManagementOptions.XmlRepository;
+			//	Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository
+			var repositoryType = xmlRepository?.GetType();
 
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			//	Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiXmlEncryptor
+			var xmlEncryptor = keyManagementOptions.XmlEncryptor;
+			var encryptorType = xmlEncryptor?.GetType();
 		}
 	}
 }
