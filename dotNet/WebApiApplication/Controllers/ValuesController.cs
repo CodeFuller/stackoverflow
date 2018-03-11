@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Services;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
@@ -11,6 +12,7 @@ namespace WebApiApplication.Controllers
 	public class ValuesController : ApiController
 	{
 		// GET api/values
+		[WebMethod(true)]
 		public List<ReportingSetDefinition> Get()
 		{
 			var mongoClient = new MongoClient(new MongoClientSettings
