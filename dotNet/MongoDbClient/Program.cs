@@ -5,13 +5,16 @@ using MongoDB.Driver.Core.Events;
 
 namespace MongoDbClient
 {
-	public class SomeDocument
+	public class Student
 	{
+		public int Id { get; set; }
+
+		public uint Grade { get; set; }
 	}
 
 	class Program
 	{
-		static void Main(string[] args)
+		static IMongoCollection<Student> GetStudentCollection()
 		{
 			var mongoClient = new MongoClient(new MongoClientSettings
 			{
@@ -26,8 +29,15 @@ namespace MongoDbClient
 			});
 
 			var database = mongoClient.GetDatabase("testDB");
-			var collection = database.GetCollection<SomeDocument>("test");
-			collection.InsertOne(new SomeDocument());
+			return database.GetCollection<Student>("students");
+		}
+
+		static void Main(string[] args)
+		{
+			//UpdateDefinition<Student> updateDef = Builders<Student>.Update.Inc(x => (int)x.Grade, -1);
+			//GetStudentCollection().UpdateOne(s => s.Id == 12345, updateDef);
+
+			GetStudentCollection().UpdateOne(s => s.Id == 12345, "{ $inc: { Grade: -1 } }");
 		}
 	}
 }
