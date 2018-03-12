@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using NetCore.WebApiApplication.Models;
 
 namespace NetCore.WebApiApplication.Controllers
 {
@@ -22,8 +23,9 @@ namespace NetCore.WebApiApplication.Controllers
 
 		// POST api/values
 		[HttpPost]
-		public void Post([FromBody]string value)
+		public string Post([FromBody] MyRequest request)
 		{
+			return "Model is " + (ModelState.IsValid ? "Valid" : "Invalid");
 		}
 
 		// PUT api/values/5
