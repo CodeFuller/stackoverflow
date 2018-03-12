@@ -1,35 +1,27 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
 
 namespace NetCore.ConsoleApplication
 {
-	public class SomeSettings
-	{
-		public string SomeValue { get; set; }
-	}
-
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			var services = new ServiceCollection();
+			services.AddSingleton<People>()
+				.AddTransient(factory => (Func<Type, IPhone>)(type => (IPhone)factory.GetService(type)));
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
+			foreach (var iphoneType in Assembly.GetExecutingAssembly().GetTypes()
+				.Where(t => !t.IsAbstract)
+				.Where(t => typeof(IPhone).IsAssignableFrom(t)))
+			{
+				services.AddTransient(iphoneType);
+			}
 
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
-
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			var provider = services.BuildServiceProvider();
+			provider.GetService<People>().Use<iphone5S>(phone => phone.Call("123456"));
 		}
 	}
 }
