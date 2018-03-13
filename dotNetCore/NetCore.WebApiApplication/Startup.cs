@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace NetCore.WebApiApplication
 {
@@ -21,7 +22,7 @@ namespace NetCore.WebApiApplication
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
 			if (env.IsDevelopment())
 			{
@@ -29,6 +30,16 @@ namespace NetCore.WebApiApplication
 			}
 
 			app.UseMvc();
+
+			var container = new StructureMap.Container(
+				c =>
+				{
+					c.For(typeof(ILogger<>)).Use(typeof(Logger<>));
+					c.For(typeof(ILoggerFactory)).Use(loggerFactory);
+				});
+			
+			//loggerFactory.AddAWSProvider(Configuration.GetAWSLoggingConfigSection(),
+			//(logLevel, message, exception) => $"[{DateTime.UtcNow}] {logLevel}: {message}");
 		}
 	}
 }
