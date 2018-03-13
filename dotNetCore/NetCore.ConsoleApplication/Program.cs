@@ -1,35 +1,26 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
 
 namespace NetCore.ConsoleApplication
 {
-	public class SomeSettings
-	{
-		public string SomeValue { get; set; }
-	}
-
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			//var ServiceTypeName = LoadServiceAssembly(AssemblyName);
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
+			//	Read from config
+			var assemblyPath = "...";
+			var typeName = "...";
 
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
+			var assembly = Assembly.LoadFrom(assemblyPath);
+			var loggerType = assembly.GetType(typeName);
+			
+			var serviceProvider = new ServiceCollection()
+				.AddTransient(typeof(IDILogger), loggerType)
+				.BuildServiceProvider();
 
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			var logger = serviceProvider.GetService<IDILogger>();
 		}
 	}
 }
