@@ -6,6 +6,11 @@ namespace MvcApplication.Controllers
 	{
 		public ActionResult Index()
 		{
+			// used to test error pages :D
+			int a = 5;
+			int b = 0;
+			int res = a / b;
+
 			return View();
 		}
 
