@@ -54,10 +54,13 @@
   <ItemGroup>
     <Compile Include="Dal\MusicLibraryRepository.cs" />
     <Compile Include="Dal\MusicLibraryContext.cs" />
+    <Compile Include="NewType.cs" />
     <Compile Include="Objects\Album.cs" />
     <Compile Include="Objects\Artist.cs" />
+    <Compile Include="OldType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplaceOldTypesBinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
