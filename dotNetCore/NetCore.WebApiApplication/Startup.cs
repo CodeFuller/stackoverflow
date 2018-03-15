@@ -28,6 +28,14 @@ namespace NetCore.WebApiApplication
 				app.UseDeveloperExceptionPage();
 			}
 
+			app.Use(async (context, next) =>
+			{
+				using (SomeTool.Start.Measuring)
+				{
+					await next.Invoke();
+				}
+			});
+
 			app.UseMvc();
 		}
 	}
