@@ -52,12 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTCPSocketListener.cs" />
     <Compile Include="Dal\MusicLibraryRepository.cs" />
     <Compile Include="Dal\MusicLibraryContext.cs" />
+    <Compile Include="IInputListener.cs" />
     <Compile Include="Objects\Album.cs" />
     <Compile Include="Objects\Artist.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StateObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
