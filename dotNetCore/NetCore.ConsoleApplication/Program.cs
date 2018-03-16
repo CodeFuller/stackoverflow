@@ -1,8 +1,5 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
+using TestLibrary;
 
 namespace NetCore.ConsoleApplication
 {
@@ -15,21 +12,17 @@ namespace NetCore.ConsoleApplication
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
-
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
-
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
-
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			try
+			{
+				Console.WriteLine("Starting...");
+				var context = new MyDbContext(@"Server=.\TestDB;Integrated Security=true;");
+				context.Database.BeginTransaction();
+				Console.WriteLine("Finished");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
 		}
 	}
 }
