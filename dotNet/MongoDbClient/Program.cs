@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 
 namespace MongoDbClient
 {
-	public class SomeDocument
-	{
-	}
-
 	class Program
 	{
 		static void Main(string[] args)
@@ -25,9 +24,38 @@ namespace MongoDbClient
 				}
 			});
 
+			BsonClassMap.RegisterClassMap<Parameter>(cm =>
+			{
+				cm.AutoMap();
+				cm.MapIdMember(x => x.Name);
+			});
+
 			var database = mongoClient.GetDatabase("testDB");
-			var collection = database.GetCollection<SomeDocument>("test");
-			collection.InsertOne(new SomeDocument());
+			var parameterCollection = database.GetCollection<Parameter>("test");
+
+			var columns = new List<string>() {"TestColumn1"};
+			var columnUnits = new Dictionary<int, string>()
+			{
+				{0, "SomeUnit1"}
+			};
+
+			columns.Select((columnName, index) => new Parameter
+				{
+					Name = columnName,
+					Unit = columnUnits[index],
+					ParameterType = ParameterType.TestResult
+				})
+				.ForEach(parameter =>
+				{
+					parameterCollection.ReplaceOne(Builders<Parameter>.Filter.Eq(x => x.Name, parameter.Name),
+						parameter,
+						new UpdateOptions
+						{
+							IsUpsert = true
+						});
+				});
+
+			var items = parameterCollection.AsQueryable().ToList();
 		}
 	}
 }
