@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -6,12 +6,15 @@ namespace UnitTests
 	[TestFixture]
 	public class Tests
 	{
-		[TestCase("ABC", "abc")]
-		public void TestMethod(string inputData, string expectedResult)
+		[TestCase("abbb", true)]
+		[TestCase("cddd", true)]
+		[TestCase("abc", false)]
+		public void TestMethod(string inputData, bool expectedResult)
 		{
-			var result = inputData.ToLower(CultureInfo.InvariantCulture);
+			Regex regex = new Regex(@"\b[A-Za-z]([A-Za-z])\1+\b");
+			var match = regex.Match(inputData);
 
-			Assert.AreEqual(expectedResult, result);
+			Assert.AreEqual(expectedResult, match.Success);
 		}
 	}
 }
