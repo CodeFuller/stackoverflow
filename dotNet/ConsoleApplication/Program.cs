@@ -1,4 +1,4 @@
-﻿using ConsoleApplication.Dal;
+﻿using System.Text.RegularExpressions;
 
 namespace ConsoleApplication
 {
@@ -6,7 +6,14 @@ namespace ConsoleApplication
 	{
 		static void Main(string[] args)
 		{
-			new MusicLibraryRepository().Test();
+			var input = @"http://tempuri.org/IService1/GetData\";
+			Regex regex = new Regex("/(\\w*)\\\\$");
+			var match = regex.Match(input);
+			if (match.Success)
+			{
+				//  data = "GetData"
+				var data = match.Groups[1].Value;
+			}
 		}
 	}
 }
