@@ -1,35 +1,26 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace NetCore.ConsoleApplication
 {
-	public class SomeSettings
-	{
-		public string SomeValue { get; set; }
-	}
-
 	class Program
 	{
+		private static SomeSettings GetTestSettings()
+		{
+			return new SomeSettings
+			{
+				SomeKey1 = "SomeData",
+				SomeKey2 = 123,
+			};
+		}
+
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			var configurationBuilder = new ConfigurationBuilder();
+			var mySettings = GetTestSettings();
+			configurationBuilder.AddInMemoryObject(mySettings, "Settings");
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
-
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
-
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+			var configuration = configurationBuilder.Build();
+			SomeSettings settings = configuration.GetSection("Settings").Get<SomeSettings>();
 		}
 	}
 }
