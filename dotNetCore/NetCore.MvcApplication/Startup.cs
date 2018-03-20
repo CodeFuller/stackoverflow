@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,10 @@ namespace NetCore.MvcApplication
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
+
+			services.AddSingleton<HtmlEncoder>(
+				HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin,
+					UnicodeRanges.CjkUnifiedIdeographs }));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
