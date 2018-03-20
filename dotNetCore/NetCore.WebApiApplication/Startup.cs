@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCore.WebApiApplication.Models;
 
 namespace NetCore.WebApiApplication
 {
@@ -17,7 +18,18 @@ namespace NetCore.WebApiApplication
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc();
+			services.AddTransient<ITestInterface, TestClass>();
+
+			services.AddMvc(options => options.RespectBrowserAcceptHeader = true)
+				.AddXmlDataContractSerializerFormatters()
+				.AddXmlSerializerFormatters()
+				.AddJsonOptions(o =>
+				{
+					o.SerializerSettings.ContractResolver = new DependencyInjectionContractResolver(services.BuildServiceProvider(),
+						new[] { typeof(ITestInterface) } );
+
+					o.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+				});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
