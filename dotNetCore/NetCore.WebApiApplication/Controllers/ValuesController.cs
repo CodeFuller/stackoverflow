@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace NetCore.WebApiApplication.Controllers
 {
@@ -8,9 +7,9 @@ namespace NetCore.WebApiApplication.Controllers
 	{
 		// GET api/values
 		[HttpGet]
-		public IEnumerable<string> Get()
+		public IActionResult Get()
 		{
-			return new string[] { "value1", "value2" };
+			return new StatusCodeResult(500);
 		}
 
 		// GET api/values/5
