@@ -1,13 +1,11 @@
 ﻿using System;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Events;
 
 namespace MongoDbClient
 {
-	public class SomeDocument
-	{
-	}
 
 	class Program
 	{
@@ -25,9 +23,21 @@ namespace MongoDbClient
 				}
 			});
 
+			var pack = new ConventionPack
+			{
+				new IgnoreDefaultPropertiesConvention<SomeDocument>()
+			};
+			ConventionRegistry.Register("Custom Conventions", pack, t => true);
+
 			var database = mongoClient.GetDatabase("testDB");
-			var collection = database.GetCollection<SomeDocument>("test");
+			var collection = database.GetCollection<SomeDocument>("testCollection");
+
 			collection.InsertOne(new SomeDocument());
+			collection.InsertOne(new SomeDocument
+			{
+				StringData = "Test data",
+				NumericData = 12345,
+			});
 		}
 	}
 }
