@@ -2,8 +2,8 @@
 
 namespace NetCore.WebApiApplication
 {
-[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public sealed class DefaultFromBodyAttribute : Attribute
-{
-}
+	[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+	public sealed class DefaultFromBodyAttribute : Attribute
+	{
+	}
 }
