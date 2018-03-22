@@ -1,33 +1,21 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using NetCore.MvcApplication.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace NetCore.MvcApplication.Controllers
 {
 	public class HomeController : Controller
 	{
+		private readonly IStringLocalizer<HomeController> _stringLocalizer;
+
+		public HomeController(IStringLocalizer<HomeController> stringLocalizer)
+		{
+			_stringLocalizer = stringLocalizer;
+		}
+
 		public IActionResult Index()
 		{
+			string testValue = _stringLocalizer["Test"];
 			return View();
-		}
-
-		public IActionResult About()
-		{
-			ViewData["Message"] = "Your application description page.";
-
-			return View();
-		}
-
-		public IActionResult Contact()
-		{
-			ViewData["Message"] = "Your contact page.";
-
-			return View();
-		}
-
-		public IActionResult Error()
-		{
-			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 		}
 	}
 }
