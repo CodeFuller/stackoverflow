@@ -23,12 +23,14 @@ namespace WebApiApplication
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			if (env.IsDevelopment())
+			app.UseMvc(routes =>
 			{
-				app.UseDeveloperExceptionPage();
-			}
+				routes.Routes.Add(new SubdomainRouter(routes.DefaultHandler, "myexample.com", "User", "Profile"));
 
-			app.UseMvc();
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}");
+			});
 		}
 	}
 }
