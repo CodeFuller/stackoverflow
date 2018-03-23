@@ -1,35 +1,34 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using NetCore.ConsoleApplication.Dal;
+using System.Linq;
+using Newtonsoft.Json;
+using Serilog.Context;
+using Serilog.Events;
 
 namespace NetCore.ConsoleApplication
 {
-	public class SomeSettings
-	{
-		public string SomeValue { get; set; }
-	}
-
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-			configurationBuilder.AddJsonFile("AppSettings.json");
-			IConfiguration configuration = configurationBuilder.Build();
+			string jsonData;
+			using (LogContext.PushProperty("property1", "SomeValue"))
+			using (LogContext.PushProperty("property2", 123))
+			{
+				var dump = LogContextSerializer.Serialize();
+				jsonData = JsonConvert.SerializeObject(dump);
+			}
 
-			IServiceCollection services = new ServiceCollection();
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
+			//	Pass jsonData between processes
 
-			ILoggerFactory loggerFactory = new LoggerFactory();
-			loggerFactory.AddConsole();
-			ILogger logger = loggerFactory.CreateLogger(String.Empty);
-			logger.LogInformation("Hello :)");
+			var restoredDump = JsonConvert.DeserializeObject<LogContextDump>(jsonData);
+			using (LogContextSerializer.Deserialize(restoredDump))
+			{
+				//  LogContext is the same as when Clone() was called above
 
-			SomeSettings settings = configuration.GetSection("SomeSettings").Get<SomeSettings>();
-
-			new MusicLibraryRepository().Test();
+				var logContextEnricher = LogContext.Clone();
+				var factory = new CaptureLogEventPropertyFactory();
+				logContextEnricher.Enrich(new LogEvent(DateTimeOffset.Now, LogEventLevel.Verbose, null, MessageTemplate.Empty, Enumerable.Empty<LogEventProperty>()), factory);
+			}
 		}
 	}
 }
