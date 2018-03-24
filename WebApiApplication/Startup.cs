@@ -25,7 +25,17 @@ namespace WebApiApplication
 		{
 			app.UseMvc(routes =>
 			{
-				routes.Routes.Add(new SubdomainRouter(routes.DefaultHandler, "myexample.com", "User", "Profile"));
+				if (env.IsDevelopment())
+				{
+					routes.MapRoute(
+						name: "user-profile",
+						template: "profiles/{username}",
+						defaults: new { controller = "User", action = "Profile" });
+				}
+				else
+				{
+					routes.Routes.Add(new SubdomainRouter(routes.DefaultHandler, "myexample.com", "User", "Profile"));
+				}
 
 				routes.MapRoute(
 					name: "default",
