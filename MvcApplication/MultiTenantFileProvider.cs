@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Internal;
+using Microsoft.Extensions.FileProviders.Physical;
 using Microsoft.Extensions.Primitives;
 
 namespace MvcApplication
 {
 	public class MultiTenantFileProvider : IFileProvider
 	{
+		private const string BasePath = @"DomainsData";
+
 		public IFileInfo GetFileInfo(string subpath)
 		{
 			if (MultiTenantHelper.CurrentHttpContext == null)
@@ -13,7 +18,7 @@ namespace MvcApplication
 				if (String.Equals(subpath, @"/Pages/_ViewImports.cshtml") || String.Equals(subpath, @"/_ViewImports.cshtml"))
 				{
 					//	Return FileInfo of non-existing file.
-					return MultiTenantFileInfo.NonExistingFile(subpath);
+					return new NotFoundFileInfo(subpath);
 				}
 
 				throw new InvalidOperationException("HttpContext is not set");
@@ -24,17 +29,26 @@ namespace MvcApplication
 
 		public IDirectoryContents GetDirectoryContents(string subpath)
 		{
-			return CreateFileInfoForCurrentRequest(subpath);
+			var fullPath = GetPhysicalPath(MultiTenantHelper.CurrentRequestDomain, subpath);
+			return new PhysicalDirectoryContents(fullPath);
 		}
 
 		public IChangeToken Watch(string filter)
 		{
-			return new NoChangeToken();
+			return NullChangeToken.Singleton;
 		}
 
-		private MultiTenantFileInfo CreateFileInfoForCurrentRequest(string subpath)
+		private IFileInfo CreateFileInfoForCurrentRequest(string subpath)
 		{
-			return new MultiTenantFileInfo(MultiTenantHelper.CurrentRequestDomain, subpath);
+			var fullPath = GetPhysicalPath(MultiTenantHelper.CurrentRequestDomain, subpath);
+			return new PhysicalFileInfo(new FileInfo(fullPath));
+		}
+
+		private string GetPhysicalPath(string tenantId, string subpath)
+		{
+			subpath = subpath.TrimStart(Path.AltDirectorySeparatorChar);
+			subpath = subpath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+			return Path.Combine(BasePath, tenantId, subpath);
 		}
 	}
 }
