@@ -1,10 +1,9 @@
-﻿using ChildApplication;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MvcApplication
+namespace ChildApplication
 {
 	public class Startup
 	{
@@ -18,7 +17,6 @@ namespace MvcApplication
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			//services.AddMvc();
 			services.AddChildApplication();
 		}
 
@@ -27,15 +25,13 @@ namespace MvcApplication
 		{
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
 				app.UseBrowserLink();
+				app.UseDeveloperExceptionPage();
 			}
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
 			}
-
-			app.UseChildApplication();
 
 			app.UseStaticFiles();
 
@@ -43,7 +39,10 @@ namespace MvcApplication
 			{
 				routes.MapRoute(
 					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
+					template: "{controller=Home}/{action=Index}/{id?}",
+					defaults: null,
+					constraints: null,
+					dataTokens: new { Namespace = "ChildApplication.ChildAppRoot.Controllers" });
 			});
 		}
 	}

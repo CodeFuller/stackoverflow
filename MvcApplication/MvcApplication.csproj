@@ -12,4 +12,16 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChildApplication\ChildApplication.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)\..\ChildApplication\bin\$(ConfigurationName)\netcoreapp2.0\ChildApplication.PrecompiledViews.dll&quot; &quot;$(TargetDir)&quot; /Y /I" />
+  </Target>
+
+  <Target Name="AddPayloadsFolder" AfterTargets="Publish">
+    <Exec Command="xcopy &quot;$(ProjectDir)\..\ChildApplication\bin\$(ConfigurationName)\netcoreapp2.0\ChildApplication.PrecompiledViews.dll&quot; &quot;$(PublishDir)&quot; /Y /I" />
+  </Target>
+
 </Project>
