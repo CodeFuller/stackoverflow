@@ -33,6 +33,8 @@ namespace MvcApplication
 				app.UseExceptionHandler("/Home/Error");
 			}
 
+			app.UseMiddleware<DoubleEscapingMiddleware>();
+
 			app.UseStaticFiles();
 
 			app.UseMvc(routes =>

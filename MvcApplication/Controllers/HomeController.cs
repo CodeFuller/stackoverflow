@@ -6,8 +6,10 @@ namespace MvcApplication.Controllers
 {
 	public class HomeController : Controller
 	{
-		public IActionResult Index()
+		public IActionResult Index([FromQuery] string phone)
 		{
+			ViewData["Phone Value"] = phone;
+
 			return View();
 		}
 
