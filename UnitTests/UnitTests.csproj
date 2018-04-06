@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ContextAccessor.cs" />
+    <Compile Include="RequestContext.cs" />
     <Compile Include="Tests.cs" />
   </ItemGroup>
   <ItemGroup>

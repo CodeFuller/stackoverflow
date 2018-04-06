@@ -1,17 +1,17 @@
-﻿using System.Globalization;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace UnitTests
 {
 	[TestFixture]
 	public class Tests
 	{
-		[TestCase("ABC", "abc")]
-		public void TestMethod(string inputData, string expectedResult)
+		[Test]
+		public void SomeTest()
 		{
-			var result = inputData.ToLower(CultureInfo.InvariantCulture);
+			var context1 = ContextAccessor.Current;
+			var context2 = ContextAccessor.Current;
 
-			Assert.AreEqual(expectedResult, result);
+			Assert.AreSame(context1, context2);
 		}
 	}
 }
