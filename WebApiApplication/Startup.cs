@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,12 +25,28 @@ namespace WebApiApplication
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
+			bool useMapWhen = false;
 
-			app.UseMvc();
+			if (useMapWhen)
+			{
+				app.MapWhen(
+					c => !c.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase),
+					a =>
+					{
+						a.UseStatusCodePagesWithReExecute("/");
+						a.UseMvc();
+					});
+
+				app.UseMvc();
+			}
+			else
+			{
+				var options = new RewriteOptions()
+					.AddRewrite(@"^(?!/api)", "/api/values", skipRemainingRules: true);
+				app.UseRewriter(options);
+
+				app.UseMvc();
+			}
 		}
 	}
 }
