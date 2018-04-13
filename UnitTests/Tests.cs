@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Threading.Tasks;
+using MongoDB.Driver;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -6,12 +8,19 @@ namespace UnitTests
 	[TestFixture]
 	public class Tests
 	{
-		[TestCase("ABC", "abc")]
-		public void TestMethod(string inputData, string expectedResult)
+		[Test]
+		public void TestMethod()
 		{
-			var result = inputData.ToLower(CultureInfo.InvariantCulture);
+			var cursorMock = Substitute.For<IAsyncCursor<string>>();
+			cursorMock.MoveNextAsync().Returns(Task.FromResult(true), Task.FromResult(false));
+			cursorMock.Current.Returns(new[] { "asd" });
 
-			Assert.AreEqual(expectedResult, result);
+			var ff = Substitute.For<IFindFluent<string, string>>();
+			ff.ToCursorAsync().Returns(Task.FromResult(cursorMock));
+			ff.Limit(1).Returns(ff);
+
+			var result = ff.FirstOrDefaultAsync().Result;
+			Assert.AreEqual("asd", result);
 		}
 	}
 }
