@@ -2,7 +2,7 @@
 
 namespace WebApiApplication
 {
-	public abstract class DbObject
+	public abstract class DbObject<T>
 	{
 		protected DbObject(IHttpContextAccessor contextAccessor)
 		{

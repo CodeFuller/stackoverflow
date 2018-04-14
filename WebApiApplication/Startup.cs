@@ -19,7 +19,8 @@ namespace WebApiApplication
 		{
 			services.AddMvc();
 
-			services.AddTransient<SomeDataObject>();
+			services.AddTransient<IDbObjectFactory, DbObjectFactory>();
+			services.AddTransient<Manufacturer>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
