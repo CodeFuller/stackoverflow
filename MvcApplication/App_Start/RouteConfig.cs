@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Web.Mvc.Routing;
 using System.Web.Routing;
 
 namespace MvcApplication
@@ -9,11 +10,10 @@ namespace MvcApplication
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-			routes.MapRoute(
-				name: "Default",
-				url: "{controller}/{action}/{id}",
-				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-			);
+			DefaultInlineConstraintResolver constraintResolver = new DefaultInlineConstraintResolver();
+			constraintResolver.ConstraintMap.Add("testConstraint", typeof(TestConstraint));
+			constraintResolver.ConstraintMap.Add("testConstraint2", typeof(TestConstraint2));
+			routes.MapMvcAttributeRoutes(constraintResolver);
 		}
 	}
 }

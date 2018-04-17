@@ -4,23 +4,17 @@ namespace MvcApplication.Controllers
 {
 	public class HomeController : Controller
 	{
-		public ActionResult Index()
+		//[Route("test/0", Order = 1)]
+		[Route("{someParam}/{test:testConstraint2}", Order = 10)]
+		public ActionResult Test0()
 		{
-			return View();
+			return Content("Test0");
 		}
 
-		public ActionResult About()
+		[Route("{someParam}/{test:testConstraint}", Order = 10)]
+		public ActionResult Test1()
 		{
-			ViewBag.Message = "Your application description page.";
-
-			return View();
-		}
-
-		public ActionResult Contact()
-		{
-			ViewBag.Message = "Your contact page.";
-
-			return View();
+			return Content("Test1");
 		}
 	}
 }
