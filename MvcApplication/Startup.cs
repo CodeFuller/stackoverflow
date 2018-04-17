@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,14 @@ namespace MvcApplication
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc();
+			services.AddMvc().AddRazorPagesOptions(options =>
+			{
+				options.Conventions.AddPageRouteModelConvention("/ListVehicles", model =>
+				{
+					model.Selectors.Clear();
+				});
+				options.Conventions.AddPageRoute("/ListVehicles", "vehicle-list");
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,22 +32,17 @@ namespace MvcApplication
 		{
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
 				app.UseBrowserLink();
+				app.UseDeveloperExceptionPage();
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/Error");
 			}
 
 			app.UseStaticFiles();
 
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
-			});
+			app.UseMvc();
 		}
 	}
 }
