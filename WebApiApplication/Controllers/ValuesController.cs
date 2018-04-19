@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebApiApplication.Controllers
 {
 	[Route("api/[controller]")]
 	public class ValuesController : Controller
 	{
+		public override void OnActionExecuting(ActionExecutingContext context)
+		{
+			// The problem: this gets executed *before* the global filter.
+			// I actually want the FooActionFilter to prepare this value for me.
+			var foo = context.RouteData.Values.GetValueOrDefault("foo").ToString();
+		}
+
 		// GET api/values
 		[HttpGet]
 		public IEnumerable<string> Get()
