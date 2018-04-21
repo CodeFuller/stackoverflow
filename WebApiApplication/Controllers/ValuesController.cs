@@ -1,35 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
+using WebApiApplication.Models;
 
 namespace WebApiApplication.Controllers
 {
 	public class ValuesController : ApiController
 	{
-		// GET api/values
-		public IEnumerable<string> Get()
+		[HttpPost]
+		[Route("")]
+		public async Task<int> Post(MyModel myModel)
 		{
-			return new string[] { "value1", "value2" };
-		}
+			Validate(myModel);
 
-		// GET api/values/5
-		public string Get(int id)
-		{
-			return "value";
-		}
+			if (!ModelState.IsValid)
+			{
+				//Stop the process and return a message...
+				return 1;
+			}
 
-		// POST api/values
-		public void Post([FromBody]string value)
-		{
-		}
+			//Continue with the process.
+			//Call the BL, etc.
 
-		// PUT api/values/5
-		public void Put(int id, [FromBody]string value)
-		{
-		}
+			await Task.CompletedTask;
 
-		// DELETE api/values/5
-		public void Delete(int id)
-		{
+			return 0;
 		}
 	}
 }
