@@ -7,11 +7,10 @@ namespace WebApiApplication.Controllers
 	public class ValuesController : Controller
 	{
 		[HttpGet]
-		[Route("GetAllSomething/{format}")]
-		[FormatFilter]
-		public async Task<IActionResult> GetAllSomething(string format)
+		[Route("GetAllSomething")]
+		public async Task<IActionResult> GetAllSomething([FromHeader(Name = "Accept")]string accept)
 		{
-			bool generateLinks = !string.IsNullOrWhiteSpace(format) && format.ToLower().EndsWith("hateoas");
+			bool generateLinks = !string.IsNullOrWhiteSpace(accept) && accept.ToLower().EndsWith("hateoas");
 
 			//	...
 
