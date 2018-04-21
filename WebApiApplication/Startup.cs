@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
@@ -25,10 +26,12 @@ namespace WebApiApplication
 					options.ReturnHttpNotAcceptable = true;
 
 					options.InputFormatters.Add(new XmlSerializerInputFormatter());
-
 					var xmlOutputFormatter = new XmlSerializerOutputFormatter();
 					xmlOutputFormatter.SupportedMediaTypes.Add("application/xml+hateoas");
 					options.OutputFormatters.Add(xmlOutputFormatter);
+
+					var jsonOutputFormatter = options.OutputFormatters.OfType<JsonOutputFormatter>().FirstOrDefault();
+					jsonOutputFormatter?.SupportedMediaTypes.Add("application/json+hateoas");
 				})
 				.AddJsonOptions(options => {
 					// Force Camel Case to JSON
